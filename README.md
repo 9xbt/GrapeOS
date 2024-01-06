@@ -1,2 +1,2 @@
 # GrapeOS
-A powerful 32-bit hobbyist Cosmos operating system
+A powerful 32-bit hobbyist C# operating system
