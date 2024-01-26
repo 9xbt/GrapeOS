@@ -24,6 +24,9 @@ namespace GrapeOS.Graphics
             Screen.DrawString(11, 11, "GrapeOS v0.0.1", default, Color.Black);
             Screen.DrawString(10, 10, "GrapeOS v0.0.1", default, Color.White);
 
+            Screen.DrawString(11, 41, Screen.GetFPS() + " FPS", default, Color.Black);
+            Screen.DrawString(10, 40, Screen.GetFPS() + " FPS", default, Color.White);
+
             Screen.DrawRectangle((int)MouseManager.X, (int)MouseManager.Y, 2, 2, 0, Color.Black);
 
             Screen.Update();
