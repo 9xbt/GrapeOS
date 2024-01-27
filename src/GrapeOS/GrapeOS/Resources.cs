@@ -18,7 +18,7 @@ namespace GrapeOS
 
         public static void Generate()
         {
-            Charcoal = new Font(_CharcoalRaw, 16);
+            Charcoal = new Font(_CharcoalRaw, 16, -1);
             Geneva = new Font(_GenevaRaw, 16);
             Mouse = Image.FromBitmap(_mouseRaw);
             CloseButton = Image.FromBitmap(_closeButtonRaw);
