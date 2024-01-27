@@ -24,7 +24,7 @@ namespace GrapeOS.Graphics
             
             Screen.DrawString(10, 10, "GrapeOS v0.0.1", Resources.FontCharcoal, Color.White, false, true);
             
-            Screen.DrawString(20, 49, Screen.GetFPS() + "\nFPS", Resources.FontCharcoal, Color.White, true, true);
+            Screen.DrawString(20, 49, Screen.GetFPS() + "\nFPS", Resources.FontGeneva, Color.White, true, true);
 
             Screen.DrawImage((int)MouseManager.X, (int)MouseManager.Y, Resources.Mouse);
 
