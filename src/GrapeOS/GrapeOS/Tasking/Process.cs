@@ -2,17 +2,20 @@
 
 namespace GrapeOS.Tasking
 {
-    internal class Process
+    internal abstract class Process
     {
         internal string Name;
+        internal bool Closing;
         internal int PID;
-        internal Action HandleRun;
 
-        internal Process(string name, Action handleRun)
+        internal Process(string name)
         {
             Name = name;
             PID = new Random().Next(0, ushort.MaxValue);
-            HandleRun = handleRun;
         }
+
+        internal abstract void HandleRun();
+
+        internal void Dispose() => Closing = true;
     }
 }

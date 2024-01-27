@@ -28,7 +28,11 @@ namespace GrapeOS.Tasking
 
         internal static void HandleRun()
         {
-            foreach (Process i in Processes) i.HandleRun?.Invoke();
+            foreach (Process i in Processes)
+            {
+                if (!i.Closing) i.HandleRun();
+                else KillProcess(i);
+            }
         }
     }
 }

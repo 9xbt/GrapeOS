@@ -43,6 +43,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\..\GrapeGL\src\GrapeGL\GrapeGL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Reference Include="GrapeGL">
         <HintPath>GrapeGL.dll</HintPath>
       </Reference>

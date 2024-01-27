@@ -8,22 +8,22 @@ namespace GrapeOS
     internal static class Resources
     {
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Fonts.Charcoal.btf")]
-        private static byte[] _fontCharcoalRaw;
+        private static byte[] _CharcoalRaw;
         
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Fonts.Geneva.btf")]
-        private static byte[] _fontGenevaRaw;
+        private static byte[] _GenevaRaw;
         
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.Mouse.bmp")]
         private static byte[] _mouseRaw;
 
-        public static Font FontCharcoal;
-        public static Font FontGeneva;
+        public static Font Charcoal;
+        public static Font Geneva;
         public static Canvas Mouse;
 
         public static void Generate()
         {
-            FontCharcoal = new Font(_fontCharcoalRaw, 16);
-            FontGeneva = new Font(_fontGenevaRaw, 16);
+            Charcoal = new Font(_CharcoalRaw, 16);
+            Geneva = new Font(_GenevaRaw, 16);
             Mouse = Image.FromBitmap(_mouseRaw);
         }
     }

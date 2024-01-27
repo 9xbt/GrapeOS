@@ -1,46 +1,39 @@
 ﻿using Cosmos.System;
 using Cosmos.Core.Memory;
+using GrapeOS.Tasking;
 using GrapeGL.Hardware.GPU;
 using GrapeGL.Graphics;
 
 namespace GrapeOS.Graphics
 {
-    internal static class WindowManager
+    internal class WindowManager : Process
     {
-        private static int _framesToHeapCollect = 10;
+        private int _framesToHeapCollect = 10;
 
-        internal static Display Screen = Display.GetDisplay(1024, 768);
+        internal Display Screen = Display.GetDisplay(1024, 768);
 
-        internal static void Initialize()
+        internal WindowManager() : base(nameof(WindowManager))
         {
             MouseManager.ScreenWidth = Screen.Width;
             MouseManager.ScreenHeight = Screen.Height;
-            Resources.Generate();
         }
 
-        internal static void Render()
+        internal void Render()
         {
-            Screen.Clear(Color.CoolGreen); //
+            Screen.Clear(Color.CoolGreen);
             
-            Screen.DrawString(10, 10, "GrapeOS v0.0.1", Resources.FontCharcoal, Color.White, false, true);
-            
-            Screen.DrawString(20, 49, Screen.GetFPS() + "\nFPS", Resources.FontGeneva, Color.White, true, true);
+            Screen.DrawString(10, 10, "GrapeOS v0.0.1", Resources.Charcoal, Color.White, false, true);
+            Screen.DrawString(20, 49, Screen.GetFPS() + " FPS", Resources.Charcoal, Color.White, false, true);
 
             Screen.DrawImage((int)MouseManager.X, (int)MouseManager.Y, Resources.Mouse);
 
             Screen.Update();
-
-            if (_framesToHeapCollect <= 0)
-            {
-                Heap.Collect();
-                _framesToHeapCollect = 10;
-            }
-
-            _framesToHeapCollect--;
         }
 
-        internal static void HandleRun()
+        internal override void HandleRun()
         {
+            Render();
+
             if (_framesToHeapCollect <= 0)
             {
                 Heap.Collect();

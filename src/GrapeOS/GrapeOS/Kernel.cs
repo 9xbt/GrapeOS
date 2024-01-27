@@ -8,8 +8,8 @@ namespace GrapeOS
     {
         protected override void BeforeRun()
         {
-            WindowManager.Initialize();
-            ProcessScheduler.AddProcess(new Process(nameof(WindowManager), WindowManager.Render));
+            Resources.Generate();
+            ProcessScheduler.AddProcess(new WindowManager());
         }
 
         protected override void Run()
