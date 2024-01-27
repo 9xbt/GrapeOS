@@ -1,6 +1,7 @@
 ﻿using Sys = Cosmos.System;
 using GrapeOS.Tasking;
 using GrapeOS.Graphics;
+using GrapeOS.Graphics.Apps;
 
 namespace GrapeOS
 {
@@ -9,7 +10,8 @@ namespace GrapeOS
         protected override void BeforeRun()
         {
             Resources.Generate();
-            ProcessScheduler.AddProcess(new WindowManager());
+            ProcessScheduler.AddProcess(WindowManager.Instance);
+            ProcessScheduler.AddProcess(new Test());
         }
 
         protected override void Run()

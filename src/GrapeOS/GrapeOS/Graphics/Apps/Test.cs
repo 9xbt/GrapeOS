@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GrapeGL.Graphics;
+﻿using GrapeGL.Graphics;
 
 namespace GrapeOS.Graphics.Apps
 {
     internal class Test : Window
     {
-        internal Test() : base(50, 50, 300, 200, "Test Application")
+        internal Test() : base(150, 150, 300, 200, "Test Application")
         {
 
         }
@@ -18,7 +13,7 @@ namespace GrapeOS.Graphics.Apps
         {
             base.Render();
 
-            Contents.DrawString(10, 10, "Hello, world!", Resources.Charcoal, Color.Black, Shadow: true);
+            Contents.DrawString(150, 86, "Hello, world!", Resources.Geneva, Color.Black, true);
         }
     }
 }

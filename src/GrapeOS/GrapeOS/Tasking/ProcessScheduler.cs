@@ -15,11 +15,11 @@ namespace GrapeOS.Tasking
 
         internal static void KillProcess(int PID)
         {
-            foreach (Process i in Processes)
+            foreach (Process p in Processes)
             {
-                if (i.PID != PID) continue;
+                if (p.PID != PID) continue;
 
-                Processes.Remove(i);
+                Processes.Remove(p);
                 return;
             }
 
