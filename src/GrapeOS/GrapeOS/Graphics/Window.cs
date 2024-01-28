@@ -7,7 +7,7 @@ namespace GrapeOS.Graphics
 {
     internal class Window : Process
     {
-        private bool _wasMouseOverCloseButton, _wasMouseOverMaximizeButton, _wasMouseOverMinimizeButton;
+        private bool _titlebarButtonsRendered;
 
         private int _originalX, _originalY;
         private ushort _originalWidth, _originalHeight;
@@ -148,21 +148,27 @@ namespace GrapeOS.Graphics
             // Handle titlebar buttons
             if (IsMouseOverCloseButton)
             {
-                if (!_wasMouseOverCloseButton)
+                if (_titlebarButtonsRendered &&
+                    MouseManager.MouseState == MouseState.Left)
+                {
                     RenderTitlebarButtons();
+                    _titlebarButtonsRendered = true;
+                }
 
                 if (_lastMouseState == MouseState.Left &&
                     MouseManager.MouseState == MouseState.None)
                 {
                     Dispose();
                 }
-
-                _wasMouseOverCloseButton = true;
             }
             else if (IsMouseOverMaximizeButton)
             {
-                if (!_wasMouseOverMaximizeButton)
+                if (_titlebarButtonsRendered &&
+                    MouseManager.MouseState == MouseState.Left)
+                {
                     RenderTitlebarButtons();
+                    _titlebarButtonsRendered = true;
+                }
 
                 if (_lastMouseState == MouseState.Left &&
                     MouseManager.MouseState == MouseState.None)
@@ -197,14 +203,18 @@ namespace GrapeOS.Graphics
                     Contents.Dispose();
                     Contents = new Canvas(Width, Height);
                     Render();
-                }
 
-                _wasMouseOverMaximizeButton = true;
+                    _titlebarButtonsRendered = false;
+                }
             }
             else if (IsMouseOverMinimizeButton)
             {
-                if (!_wasMouseOverMinimizeButton)
+                if (_titlebarButtonsRendered &&
+                    MouseManager.MouseState == MouseState.Left)
+                {
                     RenderTitlebarButtons();
+                    _titlebarButtonsRendered = true;
+                }
 
                 if (_lastMouseState == MouseState.Left &&
                     MouseManager.MouseState == MouseState.None)
@@ -220,20 +230,9 @@ namespace GrapeOS.Graphics
                     Contents.Dispose();
                     Contents = new Canvas(Width, Height);
                     Render();
+
+                    _titlebarButtonsRendered = false;
                 }
-
-                _wasMouseOverMinimizeButton = true;
-            }
-
-            if ((_wasMouseOverCloseButton && !IsMouseOverCloseButton) ||
-                (_wasMouseOverMaximizeButton && !IsMouseOverMaximizeButton) ||
-                (_wasMouseOverMinimizeButton && !IsMouseOverMinimizeButton))
-            {
-                RenderTitlebarButtons();
-
-                _wasMouseOverCloseButton = false;
-                _wasMouseOverMaximizeButton = false;
-                _wasMouseOverMinimizeButton = false;
             }
 
             // Handle dragging

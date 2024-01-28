@@ -68,7 +68,7 @@ namespace GrapeOS.Graphics
                 Screen.DrawLine(w.X + w.Width, w.Y + 2, w.X + w.Width, w.Y + w.Height + 1, Color.Black);
             }
 
-            Screen.Update();
+            Screen.Update(false);
 
             if (_framesToHeapCollect <= 0)
             {
