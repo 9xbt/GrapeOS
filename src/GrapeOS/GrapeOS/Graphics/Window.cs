@@ -167,6 +167,9 @@ namespace GrapeOS.Graphics
                 if (_lastMouseState == MouseState.Left &&
                     MouseManager.MouseState == MouseState.None)
                 {
+                    if (Minimized)
+                        Height = _originalHeight;
+
                     Maximized = !Maximized;
                     Minimized = false;
 
@@ -191,6 +194,7 @@ namespace GrapeOS.Graphics
                         Height = _originalHeight;
                     }
 
+                    Contents.Dispose();
                     Contents = new Canvas(Width, Height);
                     Render();
                 }
@@ -208,10 +212,12 @@ namespace GrapeOS.Graphics
                     Minimized = !Minimized;
                     Maximized = false;
 
-                    if (Minimized) _originalHeight = Height;
+                    if (Minimized)
+                        _originalHeight = Height;
 
                     Height = Minimized ? (ushort)22 : _originalHeight;
 
+                    Contents.Dispose();
                     Contents = new Canvas(Width, Height);
                     Render();
                 }
@@ -231,8 +237,7 @@ namespace GrapeOS.Graphics
             }
 
             // Handle dragging
-            if (!Maximized &&
-                IsMouseOverTitlebar && !IsMouseOverCloseButton &&
+            if (IsMouseOverTitlebar && !IsMouseOverCloseButton &&
                 !IsMouseOverMaximizeButton && !IsMouseOverMinimizeButton &&
                 _lastMouseState == MouseState.None &&
                 MouseManager.MouseState == MouseState.Left)

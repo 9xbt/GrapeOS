@@ -10,7 +10,7 @@ namespace GrapeOS.Graphics
 {
     internal sealed class WindowManager : Process
     {
-        private int _framesToHeapCollect = 10;
+        private int _framesToHeapCollect = 20;
         private byte _lastSecond = RTC.Second;
 
         internal List<Window> Windows = new List<Window>();
