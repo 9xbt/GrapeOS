@@ -79,6 +79,9 @@ namespace GrapeOS.Graphics
                 _lastSecond = RTC.Second;
             }
 
+            // Rendering the mouse technically counts as rendering a frame.
+            // Since we don't need to copy the framebuffer for rendering the
+            // mouse, just increase the FPS counter by one
             Screen._Frames++;
             Screen.SetCursor(MouseManager.X, MouseManager.Y, true);
 
