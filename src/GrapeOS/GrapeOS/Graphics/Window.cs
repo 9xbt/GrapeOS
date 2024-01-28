@@ -88,6 +88,8 @@ namespace GrapeOS.Graphics
             {
                 Contents[Width - 2, 1] = new Color(0xFFF3F3F3);
                 Contents[1, Height - 2] = new Color(0xFFF3F3F3);
+
+                WindowManager.Instance.Render();
                 return;
             }
 
@@ -97,10 +99,21 @@ namespace GrapeOS.Graphics
             for (int i = 0; i < 6; i++) Contents.DrawLine(21, 4 + i * 2, Width - 38, 4 + i * 2, Color.White);
             for (int i = 0; i < 6; i++) Contents.DrawLine(22, 5 + i * 2, Width - 37, 5 + i * 2, new Color(0xFF969696));
 
-            Contents.DrawFilledRectangle((Width / 2) - (Resources.Charcoal.MeasureString(Title + " ") / 2),
-                4, Resources.Charcoal.MeasureString(Title + " "), 12, 0, new Color(0xFFDADADA));
+            Contents.DrawFilledRectangle((Width / 2) - (Resources.Charcoal.MeasureString(Title + " ") / 2) - 1,
+                4, (ushort)(Resources.Charcoal.MeasureString(Title + " ") + 2), 12, 0, new Color(0xFFDADADA));
             Contents.DrawString((Width / 2) - (Resources.Charcoal.MeasureString(Title) / 2) - 1,
                 2, Title, Resources.Charcoal, Color.Black);
+
+            for (int i = 0; i < 6; i++) Contents[(Width / 2) + (Resources.Charcoal.MeasureString(Title + " ") / 2),
+                4 + i * 2] = Color.White;
+            for (int i = 0; i < 6; i++) Contents[(Width / 2) - (Resources.Charcoal.MeasureString(Title + " ") / 2) - 1,
+                5 + i * 2] = new Color(0xFF969696);
+
+            if (Minimized)
+            {
+                WindowManager.Instance.Render();
+                return;
+            }
 
             // Render window contents area
             Contents.DrawLine(4, 20, Width - 6, 20, new Color(0xFFB3B3B3));
@@ -154,26 +167,28 @@ namespace GrapeOS.Graphics
                 if (_lastMouseState == MouseState.Left &&
                     MouseManager.MouseState == MouseState.None)
                 {
-                    _originalX = X;
-                    _originalY = Y;
-
                     Maximized = !Maximized;
                     Minimized = false;
 
                     // Do the resizing
                     if (Maximized)
                     {
+                        _originalX = X;
+                        _originalY = Y;
+                        _originalWidth = Width;
+                        _originalHeight = Height;
+
+                        X = 0;
+                        Y = 0;
+                        Width = WindowManager.Instance.Screen.Width;
+                        Height = WindowManager.Instance.Screen.Height;
+                    }
+                    else
+                    {
                         X = _originalX;
                         Y = _originalY;
                         Width = _originalWidth;
                         Height = _originalHeight;
-                    }
-                    else
-                    {
-                        X = 10;
-                        Y = 10;
-                        Width = (ushort)(WindowManager.Instance.Screen.Width - 20);
-                        Height = (ushort)(WindowManager.Instance.Screen.Height - 20);
                     }
 
                     Contents = new Canvas(Width, Height);
@@ -190,10 +205,12 @@ namespace GrapeOS.Graphics
                 if (_lastMouseState == MouseState.Left &&
                     MouseManager.MouseState == MouseState.None)
                 {
-                    Maximized = false;
                     Minimized = !Minimized;
+                    Maximized = false;
 
-                    Height = Minimized ? _originalHeight : (ushort)22;
+                    if (Minimized) _originalHeight = Height;
+
+                    Height = Minimized ? (ushort)22 : _originalHeight;
 
                     Contents = new Canvas(Width, Height);
                     Render();
@@ -214,7 +231,8 @@ namespace GrapeOS.Graphics
             }
 
             // Handle dragging
-            if (IsMouseOverTitlebar && !IsMouseOverCloseButton &&
+            if (!Maximized &&
+                IsMouseOverTitlebar && !IsMouseOverCloseButton &&
                 !IsMouseOverMaximizeButton && !IsMouseOverMinimizeButton &&
                 _lastMouseState == MouseState.None &&
                 MouseManager.MouseState == MouseState.Left)
