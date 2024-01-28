@@ -7,6 +7,8 @@ namespace GrapeOS.Graphics
 {
     internal class Window : Process
     {
+        private bool _wasMouseOverCloseButton, _wasMouseOverMaximizeButton, _wasMouseOverMinimizeButton;
+
         private int _originalX, _originalY;
         private ushort _originalWidth, _originalHeight;
 
@@ -115,6 +117,8 @@ namespace GrapeOS.Graphics
                 if (c == null) Controls.Remove(c);
                 Contents.DrawImage(c.X + 6, c.Y + 22, c.Contents, c.RenderWithAlpha);
             }
+
+            WindowManager.Instance.Render();
         }
 
         private void RenderTitlebarButtons()
@@ -122,6 +126,8 @@ namespace GrapeOS.Graphics
             Contents.DrawImage(4, 4, IsMouseOverCloseButton ? Resources.CloseButtonPressed : Resources.CloseButton);
             Contents.DrawImage(Width - 33, 4, IsMouseOverMaximizeButton ? Resources.MaximizeButtonPressed : Resources.MaximizeButton);
             Contents.DrawImage(Width - 17, 4, IsMouseOverMinimizeButton ? Resources.MinimizeButtonPressed : Resources.MinimizeButton);
+
+            WindowManager.Instance.Render();
         }
 
         internal override void HandleRun()
@@ -129,17 +135,21 @@ namespace GrapeOS.Graphics
             // Handle titlebar buttons
             if (IsMouseOverCloseButton)
             {
-                RenderTitlebarButtons();
+                if (!_wasMouseOverCloseButton)
+                    RenderTitlebarButtons();
 
                 if (_lastMouseState == MouseState.Left &&
                     MouseManager.MouseState == MouseState.None)
                 {
                     Dispose();
                 }
+
+                _wasMouseOverCloseButton = true;
             }
             else if (IsMouseOverMaximizeButton)
             {
-                RenderTitlebarButtons();
+                if (!_wasMouseOverMaximizeButton)
+                    RenderTitlebarButtons();
 
                 if (_lastMouseState == MouseState.Left &&
                     MouseManager.MouseState == MouseState.None)
@@ -169,10 +179,13 @@ namespace GrapeOS.Graphics
                     Contents = new Canvas(Width, Height);
                     Render();
                 }
+
+                _wasMouseOverMaximizeButton = true;
             }
             else if (IsMouseOverMinimizeButton)
             {
-                RenderTitlebarButtons();
+                if (!_wasMouseOverMinimizeButton)
+                    RenderTitlebarButtons();
 
                 if (_lastMouseState == MouseState.Left &&
                     MouseManager.MouseState == MouseState.None)
@@ -185,8 +198,20 @@ namespace GrapeOS.Graphics
                     Contents = new Canvas(Width, Height);
                     Render();
                 }
+
+                _wasMouseOverMinimizeButton = true;
             }
-            else RenderTitlebarButtons();
+
+            if ((_wasMouseOverCloseButton && !IsMouseOverCloseButton) ||
+                (_wasMouseOverMaximizeButton && !IsMouseOverMaximizeButton) ||
+                (_wasMouseOverMinimizeButton && !IsMouseOverMinimizeButton))
+            {
+                RenderTitlebarButtons();
+
+                _wasMouseOverCloseButton = false;
+                _wasMouseOverMaximizeButton = false;
+                _wasMouseOverMinimizeButton = false;
+            }
 
             // Handle dragging
             if (IsMouseOverTitlebar && !IsMouseOverCloseButton &&
@@ -208,6 +233,8 @@ namespace GrapeOS.Graphics
             {
                 X = (int)(_dragStartX + (MouseManager.X - _dragStartMouseX));
                 Y = (int)(_dragStartY + (MouseManager.Y - _dragStartMouseY));
+
+                WindowManager.Instance.Render();
             }
 
             // Handle the controls
@@ -223,6 +250,7 @@ namespace GrapeOS.Graphics
         internal override void Dispose()
         {
             WindowManager.Instance.RemoveWindow(this);
+            WindowManager.Instance.Render();
             base.Dispose();
         }
     }

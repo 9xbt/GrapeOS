@@ -1,7 +1,8 @@
-﻿using Cosmos.System;
+﻿using System.Collections.Generic;
+using Cosmos.System;
 using Cosmos.Core.Memory;
+using Cosmos.HAL;
 using GrapeOS.Tasking;
-using System.Collections.Generic;
 using GrapeGL.Hardware.GPU;
 using GrapeGL.Graphics;
 
@@ -10,6 +11,7 @@ namespace GrapeOS.Graphics
     internal sealed class WindowManager : Process
     {
         private int _framesToHeapCollect = 10;
+        private byte _lastSecond = RTC.Second;
 
         internal List<Window> Windows = new List<Window>();
         internal Display Screen = Display.GetDisplay(1024, 768);
@@ -46,13 +48,12 @@ namespace GrapeOS.Graphics
         internal void RemoveWindow(Window window)
             => Windows.Remove(window);
 
-        internal override void HandleRun()
+        internal void Render()
         {
             Screen.Clear(new Color(0xFFB3B3DA));
 
             Screen.DrawString(10, 10, "GrapeOS v0.0.1", Resources.Charcoal, Color.White, Shadow: true);
-            Screen.DrawString(10, 36, "Note: this is still very WIP", Resources.Charcoal, Color.White, Shadow: true);
-            Screen.DrawString(10, 62, Screen.GetFPS() + " FPS", Resources.Charcoal, Color.White, Shadow: true);
+            Screen.DrawString(10, 36, Screen.GetFPS() + " FPS", Resources.Charcoal, Color.White, Shadow: true);
 
             foreach (Window w in Windows)
             {
@@ -68,12 +69,23 @@ namespace GrapeOS.Graphics
             }
 
             Screen.Update();
-            Screen.SetCursor(MouseManager.X, MouseManager.Y, true); // TODO: make the mouse also support software for use with VBE
+        }
+
+        internal override void HandleRun()
+        {
+            if (_lastSecond != RTC.Second)
+            {
+                Render();
+                _lastSecond = RTC.Second;
+            }
+
+            Screen._Frames++;
+            Screen.SetCursor(MouseManager.X, MouseManager.Y, true);
 
             if (_framesToHeapCollect <= 0)
             {
                 Heap.Collect();
-                _framesToHeapCollect = 10;
+                _framesToHeapCollect = 20;
             }
 
             _framesToHeapCollect--;
