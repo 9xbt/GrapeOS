@@ -154,8 +154,6 @@ namespace GrapeOS.Graphics
                 if (_lastMouseState == MouseState.Left &&
                     MouseManager.MouseState == MouseState.None)
                 {
-                    Cosmos.HAL.PCSpeaker.Beep(100, 20);
-
                     Dispose();
                 }
 
@@ -169,8 +167,6 @@ namespace GrapeOS.Graphics
                 if (_lastMouseState == MouseState.Left &&
                     MouseManager.MouseState == MouseState.None)
                 {
-                    Cosmos.HAL.PCSpeaker.Beep(100, 20);
-
                     Maximized = !Maximized;
                     Minimized = false;
 
@@ -209,8 +205,6 @@ namespace GrapeOS.Graphics
                 if (_lastMouseState == MouseState.Left &&
                     MouseManager.MouseState == MouseState.None)
                 {
-                    Cosmos.HAL.PCSpeaker.Beep(100, 20);
-
                     Minimized = !Minimized;
                     Maximized = false;
 

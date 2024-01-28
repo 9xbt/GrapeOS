@@ -17,10 +17,6 @@ namespace GrapeOS
             {
                 Resources.Generate();
                 ProcessScheduler.AddProcess(WindowManager.Instance);
-                
-                ProcessScheduler.HandleRun();
-                Console.Beep(600, 500);
-
                 ProcessScheduler.AddProcess(new HelloWorld());
             }
             catch (Exception ex)

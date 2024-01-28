@@ -69,6 +69,14 @@ namespace GrapeOS.Graphics
             }
 
             Screen.Update();
+
+            if (_framesToHeapCollect <= 0)
+            {
+                Heap.Collect();
+                _framesToHeapCollect = 20;
+            }
+
+            _framesToHeapCollect--;
         }
 
         internal override void HandleRun()
@@ -82,16 +90,8 @@ namespace GrapeOS.Graphics
             // Rendering the mouse technically counts as rendering a frame.
             // Since we don't need to copy the framebuffer for rendering the
             // mouse, just increase the FPS counter by one
-            Screen._Frames++;
             Screen.SetCursor(MouseManager.X, MouseManager.Y, true);
-
-            if (_framesToHeapCollect <= 0)
-            {
-                Heap.Collect();
-                _framesToHeapCollect = 20;
-            }
-
-            _framesToHeapCollect--;
+            Screen._Frames++;
         }
     }
 }
