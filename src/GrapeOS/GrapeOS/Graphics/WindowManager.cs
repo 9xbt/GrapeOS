@@ -7,7 +7,7 @@ using GrapeGL.Graphics;
 
 namespace GrapeOS.Graphics
 {
-    internal class WindowManager : Process
+    internal sealed class WindowManager : Process
     {
         private int _framesToHeapCollect = 10;
 
@@ -24,6 +24,22 @@ namespace GrapeOS.Graphics
             Screen.DefineCursor(Resources.Mouse);
         }
 
+        internal Window FocusedWindow
+        {
+            get
+            {
+                if (Windows.Count < 1)
+                    return null;
+
+                return Windows[^1];
+            }
+            set
+            {
+                Windows.Remove(value);
+                Windows.Add(value);
+            }
+        }
+
         internal void AddWindow(Window window)
             => Windows.Add(window);
 
@@ -32,10 +48,11 @@ namespace GrapeOS.Graphics
 
         internal override void HandleRun()
         {
-            Screen.Clear(Color.CoolGreen);
+            Screen.Clear(new Color(0xFFB3B3DA));
 
-            Screen.DrawString(10, 10, "GrapeOS v0.0.1", Resources.Charcoal, Color.White, Shadow: true, SpacingModifier: -1);
-            Screen.DrawString(10, 36, Screen.GetFPS() + " FPS", Resources.Charcoal, Color.White, Shadow: true, SpacingModifier: -1);
+            Screen.DrawString(10, 10, "GrapeOS v0.0.1", Resources.Charcoal, Color.White, Shadow: true);
+            Screen.DrawString(10, 36, "Note: this is still very WIP", Resources.Charcoal, Color.White, Shadow: true);
+            Screen.DrawString(10, 62, Screen.GetFPS() + " FPS", Resources.Charcoal, Color.White, Shadow: true);
 
             foreach (Window w in Windows)
             {
@@ -51,7 +68,7 @@ namespace GrapeOS.Graphics
             }
 
             Screen.Update();
-            Screen.SetCursor(MouseManager.X, MouseManager.Y, true);
+            Screen.SetCursor(MouseManager.X, MouseManager.Y, true); // TODO: make the mouse also support software for use with VBE
 
             if (_framesToHeapCollect <= 0)
             {

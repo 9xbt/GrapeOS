@@ -16,6 +16,6 @@ namespace GrapeOS.Tasking
 
         internal abstract void HandleRun();
 
-        internal void Dispose() => Closing = true;
+        internal virtual void Dispose() => Closing = true;
     }
 }

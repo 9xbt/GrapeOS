@@ -10,11 +10,14 @@ namespace GrapeOS
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Fonts.Geneva.btf")] private static byte[] _GenevaRaw;
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.Mouse.bmp")] private static byte[] _mouseRaw;
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.Close.bmp")] private static byte[] _closeButtonRaw;
+        [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.ClosePressed.bmp")] private static byte[] _closeButtonPressedRaw;
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.Maximize.bmp")] private static byte[] _maximizeButtonRaw;
+        [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.MaximizePressed.bmp")] private static byte[] _maximizeButtonPressedRaw;
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.Minimize.bmp")] private static byte[] _minimizeButtonRaw;
+        [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.MinimizePressed.bmp")] private static byte[] _minimizeButtonPressedRaw;
 
         public static Font Charcoal, Geneva;
-        public static Canvas Mouse, CloseButton, MaximizeButton, MinimizeButton;
+        public static Canvas Mouse, CloseButton, MaximizeButton, MinimizeButton, CloseButtonPressed, MaximizeButtonPressed, MinimizeButtonPressed;
 
         public static void Generate()
         {
@@ -22,8 +25,11 @@ namespace GrapeOS
             Geneva = new Font(_GenevaRaw, 16);
             Mouse = Image.FromBitmap(_mouseRaw);
             CloseButton = Image.FromBitmap(_closeButtonRaw);
+            CloseButtonPressed = Image.FromBitmap(_closeButtonPressedRaw);
             MaximizeButton = Image.FromBitmap(_maximizeButtonRaw);
+            MaximizeButtonPressed = Image.FromBitmap(_maximizeButtonPressedRaw);
             MinimizeButton = Image.FromBitmap(_minimizeButtonRaw);
+            MinimizeButtonPressed = Image.FromBitmap(_minimizeButtonPressedRaw);
         }
     }
 }

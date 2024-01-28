@@ -27,8 +27,11 @@
       <None Remove="Resources\Fonts\Charcoal.btf" />
       <None Remove="Resources\Fonts\Geneva.btf" />
       <None Remove="Resources\Images\Close.bmp" />
+      <None Remove="Resources\Images\ClosePressed.bmp" />
       <None Remove="Resources\Images\Maximize.bmp" />
+      <None Remove="Resources\Images\MaximizePressed.bmp" />
       <None Remove="Resources\Images\Minimize.bmp" />
+      <None Remove="Resources\Images\MinimizePressed.bmp" />
       <None Remove="Resources\Images\Mouse.bmp" />
     </ItemGroup>
 
@@ -36,8 +39,11 @@
       <EmbeddedResource Include="Resources\Fonts\Charcoal.btf" />
       <EmbeddedResource Include="Resources\Fonts\Geneva.btf" />
       <EmbeddedResource Include="Resources\Images\Close.bmp" />
+      <EmbeddedResource Include="Resources\Images\ClosePressed.bmp" />
       <EmbeddedResource Include="Resources\Images\Maximize.bmp" />
+      <EmbeddedResource Include="Resources\Images\MaximizePressed.bmp" />
       <EmbeddedResource Include="Resources\Images\Minimize.bmp" />
+      <EmbeddedResource Include="Resources\Images\MinimizePressed.bmp" />
       <EmbeddedResource Include="Resources\Images\Mouse.bmp" />
     </ItemGroup>
 
@@ -50,12 +56,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\GrapeGL\src\GrapeGL\GrapeGL.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="GrapeGL">
-        <HintPath>GrapeGL.dll</HintPath>
-      </Reference>
     </ItemGroup>
 	
 </Project>
