@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Cosmos.System;
 using Cosmos.Core.Memory;
 using Cosmos.HAL;
@@ -64,6 +65,9 @@ namespace GrapeOS.Graphics
                 }
 
                 Screen.DrawImage(w.X, w.Y, w.Contents, false);
+
+                if (w.Borderless) continue;
+
                 Screen.DrawLine(w.X + 2, w.Y + w.Height, w.X + w.Width + 1, w.Y + w.Height, Color.Black);
                 Screen.DrawLine(w.X + w.Width, w.Y + 2, w.X + w.Width, w.Y + w.Height + 1, Color.Black);
             }
@@ -89,7 +93,7 @@ namespace GrapeOS.Graphics
 
             // Rendering the mouse technically counts as rendering a frame.
             // Since we don't need to copy the framebuffer for rendering the
-            // mouse, just increase the FPS counter by one
+            // mouse, just increase the FPS counter by one.
             Screen.SetCursor(MouseManager.X, MouseManager.Y, true);
             Screen._Frames++;
         }

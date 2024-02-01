@@ -7,8 +7,6 @@ namespace GrapeOS.Graphics
 {
     internal class Window : Process
     {
-        private bool _titlebarButtonsRendered;
-
         private int _originalX, _originalY;
         private ushort _originalWidth, _originalHeight;
 
@@ -86,8 +84,16 @@ namespace GrapeOS.Graphics
 
             if (Borderless)
             {
+                // Render the window corners
                 Contents[Width - 2, 1] = new Color(0xFFF3F3F3);
                 Contents[1, Height - 2] = new Color(0xFFF3F3F3);
+
+                // Render the controls
+                foreach (Control c in Controls)
+                {
+                    if (c == null) Controls.Remove(c);
+                    Contents.DrawImage(c.X + 2, c.Y + 2, c.Contents, c.RenderWithAlpha);
+                }
 
                 WindowManager.Instance.Render();
                 return;
@@ -121,7 +127,6 @@ namespace GrapeOS.Graphics
             Contents.DrawLine(4, Height - 6, Width - 5, Height - 6, Color.White);
             Contents.DrawLine(Width - 5, 21, Width - 5, Height - 6, Color.White);
             Contents.DrawRectangle(5, 21, (ushort)(Width - 10), (ushort)(Height - 27), 0, Color.Black);
-
             Contents.DrawFilledRectangle(6, 22, (ushort)(Width - 12), (ushort)(Height - 29), 0, new Color(0xFFE7E7E7));
 
             // Render the controls
@@ -136,9 +141,11 @@ namespace GrapeOS.Graphics
 
         private void RenderTitlebarButtons()
         {
-            Contents.DrawImage(4, 4, IsMouseOverCloseButton ? Resources.CloseButtonPressed : Resources.CloseButton);
-            Contents.DrawImage(Width - 33, 4, IsMouseOverMaximizeButton ? Resources.MaximizeButtonPressed : Resources.MaximizeButton);
-            Contents.DrawImage(Width - 17, 4, IsMouseOverMinimizeButton ? Resources.MinimizeButtonPressed : Resources.MinimizeButton);
+            if (Borderless) return;
+
+            Contents.DrawImage(4, 4, IsMouseOverCloseButton && MouseManager.MouseState == MouseState.Left ? Resources.CloseButtonPressed : Resources.CloseButton);
+            Contents.DrawImage(Width - 33, 4, IsMouseOverMaximizeButton && MouseManager.MouseState == MouseState.Left ? Resources.MaximizeButtonPressed : Resources.MaximizeButton);
+            Contents.DrawImage(Width - 17, 4, IsMouseOverMinimizeButton && MouseManager.MouseState == MouseState.Left ? Resources.MinimizeButtonPressed : Resources.MinimizeButton);
 
             WindowManager.Instance.Render();
         }
@@ -146,97 +153,69 @@ namespace GrapeOS.Graphics
         internal override void HandleRun()
         {
             // Handle titlebar buttons
-            if (IsMouseOverCloseButton)
-            {
-                if (_titlebarButtonsRendered &&
-                    MouseManager.MouseState == MouseState.Left)
-                {
-                    RenderTitlebarButtons();
-                    _titlebarButtonsRendered = true;
-                }
+            if (_lastMouseState != MouseManager.MouseState)
+                RenderTitlebarButtons();
 
-                if (_lastMouseState == MouseState.Left &&
-                    MouseManager.MouseState == MouseState.None)
-                {
-                    Dispose();
-                }
+            if (IsMouseOverCloseButton &&
+                _lastMouseState == MouseState.Left &&
+                MouseManager.MouseState == MouseState.None)
+            {
+                Dispose();
             }
-            else if (IsMouseOverMaximizeButton)
+            else if (IsMouseOverMaximizeButton &&
+                _lastMouseState == MouseState.Left &&
+                MouseManager.MouseState == MouseState.None)
             {
-                if (_titlebarButtonsRendered &&
-                    MouseManager.MouseState == MouseState.Left)
+                if (Minimized)
+                    Height = _originalHeight;
+
+                Maximized = !Maximized;
+                Minimized = false;
+
+                // Do the resizing
+                if (Maximized)
                 {
-                    RenderTitlebarButtons();
-                    _titlebarButtonsRendered = true;
+                    _originalX = X;
+                    _originalY = Y;
+                    _originalWidth = Width;
+                    _originalHeight = Height;
+
+                    X = 0;
+                    Y = 0;
+                    Width = WindowManager.Instance.Screen.Width;
+                    Height = WindowManager.Instance.Screen.Height;
+                }
+                else
+                {
+                    X = _originalX;
+                    Y = _originalY;
+                    Width = _originalWidth;
+                    Height = _originalHeight;
                 }
 
-                if (_lastMouseState == MouseState.Left &&
-                    MouseManager.MouseState == MouseState.None)
-                {
-                    if (Minimized)
-                        Height = _originalHeight;
-
-                    Maximized = !Maximized;
-                    Minimized = false;
-
-                    // Do the resizing
-                    if (Maximized)
-                    {
-                        _originalX = X;
-                        _originalY = Y;
-                        _originalWidth = Width;
-                        _originalHeight = Height;
-
-                        X = 0;
-                        Y = 0;
-                        Width = WindowManager.Instance.Screen.Width;
-                        Height = WindowManager.Instance.Screen.Height;
-                    }
-                    else
-                    {
-                        X = _originalX;
-                        Y = _originalY;
-                        Width = _originalWidth;
-                        Height = _originalHeight;
-                    }
-
-                    Contents.Dispose();
-                    Contents = new Canvas(Width, Height);
-                    Render();
-
-                    _titlebarButtonsRendered = false;
-                }
+                Contents.Dispose();
+                Contents = new Canvas(Width, Height);
+                Render();
             }
-            else if (IsMouseOverMinimizeButton)
+            else if (IsMouseOverMinimizeButton &&
+                _lastMouseState == MouseState.Left &&
+                MouseManager.MouseState == MouseState.None)
             {
-                if (_titlebarButtonsRendered &&
-                    MouseManager.MouseState == MouseState.Left)
-                {
-                    RenderTitlebarButtons();
-                    _titlebarButtonsRendered = true;
-                }
+                Minimized = !Minimized;
+                Maximized = false;
 
-                if (_lastMouseState == MouseState.Left &&
-                    MouseManager.MouseState == MouseState.None)
-                {
-                    Minimized = !Minimized;
-                    Maximized = false;
+                if (Minimized)
+                    _originalHeight = Height;
 
-                    if (Minimized)
-                        _originalHeight = Height;
+                Height = Minimized ? (ushort)22 : _originalHeight;
 
-                    Height = Minimized ? (ushort)22 : _originalHeight;
-
-                    Contents.Dispose();
-                    Contents = new Canvas(Width, Height);
-                    Render();
-
-                    _titlebarButtonsRendered = false;
-                }
+                Contents.Dispose();
+                Contents = new Canvas(Width, Height);
+                Render();
             }
 
             // Handle dragging
-            if (IsMouseOverTitlebar && !IsMouseOverCloseButton &&
+            if (!Borderless && IsMouseOverTitlebar && !IsMouseOverCloseButton &&
                 !IsMouseOverMaximizeButton && !IsMouseOverMinimizeButton &&
                 _lastMouseState == MouseState.None &&
                 MouseManager.MouseState == MouseState.Left)

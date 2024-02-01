@@ -13,32 +13,14 @@ namespace GrapeOS
     {
         protected override void BeforeRun()
         {
-            try
-            {
-                Resources.Generate();
-                ProcessScheduler.AddProcess(WindowManager.Instance);
-                ProcessScheduler.AddProcess(new HelloWorld());
-            }
-            catch (Exception ex)
-            {
-                WindowManager.Instance.Screen.Clear(Color.Red);
-                WindowManager.Instance.Screen.DrawString(10, 10, "An error occurred: " +
-                    ex.Message,Resources.Charcoal, Color.White, Shadow: true);
-            }
+            Resources.Generate();
+            ProcessScheduler.AddProcess(WindowManager.Instance);
+            ProcessScheduler.AddProcess(new HelloWorld());
         }
 
         protected override void Run()
         {
-            try
-            {
-                ProcessScheduler.HandleRun();
-            }
-            catch (Exception ex)
-            {
-                WindowManager.Instance.Screen.Clear(Color.Red);
-                WindowManager.Instance.Screen.DrawString(10, 10, "An error occurred: " +
-                    ex.Message, Resources.Charcoal, Color.White, Shadow: true);
-            }
+            ProcessScheduler.HandleRun();
         }
     }
 }
