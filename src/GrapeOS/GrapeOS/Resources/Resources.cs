@@ -13,8 +13,9 @@ namespace GrapeOS
 
     internal static class Resources
     {
-        [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Fonts.Charcoal.btf")] private static readonly byte[] _CharcoalRaw;
-        [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Fonts.Geneva.btf")] private static readonly byte[] _GenevaRaw;
+        [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Fonts.Charcoal.btf")] private static readonly byte[] _charcoalRaw;
+        [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Fonts.Classic.btf")] private static readonly byte[] _classicRaw;
+        [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Fonts.Geneva.btf")] private static readonly byte[] _genevaRaw;
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.BootLogo.bmp")] private static readonly byte[] _bootLogoRaw;
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.Close.bmp")] private static readonly byte[] _closeButtonRaw;
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.ClosePressed.bmp")] private readonly static byte[] _closeButtonPressedRaw;
@@ -24,7 +25,7 @@ namespace GrapeOS
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.MinimizePressed.bmp")] private static readonly byte[] _minimizeButtonPressedRaw;
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.Mouse.bmp")] private static readonly byte[] _mouseRaw;
 
-        public static Font Charcoal, Geneva;
+        public static Font Charcoal, Classic, Geneva;
         public static Canvas BootLogo, CloseButton, MaximizeButton, MinimizeButton, CloseButtonPressed, MaximizeButtonPressed, MinimizeButtonPressed, Mouse;
 
         public static void Generate(ResourceType type)
@@ -32,8 +33,9 @@ namespace GrapeOS
             switch (type)
             {
                 case ResourceType.Priority:
-                    Charcoal = new Font(_CharcoalRaw, 16, -1);
-                    Geneva = new Font(_GenevaRaw, 16);
+                    Charcoal = new Font(_charcoalRaw, 16, -1);
+                    Classic = new Font(_classicRaw, 16);
+                    Geneva = new Font(_genevaRaw, 16);
                     BootLogo = Image.FromBitmap(_bootLogoRaw);
                     Mouse = Image.FromBitmap(_mouseRaw);
                     return;

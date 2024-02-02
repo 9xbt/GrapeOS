@@ -215,7 +215,7 @@ namespace GrapeOS.Graphics
             }
 
             // Handle dragging
-            if (/*!Borderless && */IsMouseOverTitlebar && !IsMouseOverCloseButton && // TODO: fix the commented part
+            if (!Borderless && IsMouseOverTitlebar && !IsMouseOverCloseButton && // TODO: fix the commented part
                 !IsMouseOverMaximizeButton && !IsMouseOverMinimizeButton &&
                 _lastMouseState == MouseState.None &&
                 MouseManager.MouseState == MouseState.Left)
@@ -250,9 +250,9 @@ namespace GrapeOS.Graphics
 
         internal override void Dispose()
         {
-            WindowManager.Instance.RemoveWindow(this);
-            WindowManager.Instance.Render();
-            base.Dispose();
+            if (WindowManager.Instance.Windows.Contains(this))
+                WindowManager.Instance.RemoveWindow(this);
+            Closing = true;
         }
     }
 }

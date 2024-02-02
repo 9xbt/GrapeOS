@@ -14,7 +14,7 @@ namespace GrapeOS.Graphics
         private int _framesToHeapCollect = 20;
         private byte _lastSecond = RTC.Second;
 
-        internal Exception _exception = null;
+        internal bool test;
         internal List<Window> Windows = new List<Window>();
         internal Display Screen = Display.GetDisplay(1024, 768);
 
@@ -47,14 +47,14 @@ namespace GrapeOS.Graphics
         internal void AddWindow(Window window)
             => Windows.Add(window);
 
-        internal void RemoveWindow(Window window)
+        internal bool RemoveWindow(Window window)
             => Windows.Remove(window);
 
         internal void Render()
         {
             Screen.Clear(new Color(0xFFB3B3DA));
 
-            Screen.DrawString(10, 10, "GrapeOS v0.0.1", Resources.Charcoal, Color.White, Shadow: true);
+            Screen.DrawString(10, 10, "GrapeOS v0.0.1 | Test: " + test, Resources.Charcoal, Color.White, Shadow: true);
             Screen.DrawString(10, 36, Screen.GetFPS() + " FPS", Resources.Charcoal, Color.White, Shadow: true);
             Screen.DrawString(10, 88, "Process list:", Resources.Charcoal, Color.White, Shadow: true);
 

@@ -12,8 +12,10 @@ namespace GrapeOS
         protected override void BeforeRun()
         {
             Resources.Generate(ResourceType.Priority);
+            Resources.Generate(ResourceType.Normal);
             ProcessScheduler.AddProcess(WindowManager.Instance);
             ProcessScheduler.AddProcess(new LoadingDialogue());
+            ProcessScheduler.AddProcess(new HelloWorld());
         }
 
         protected override void Run()

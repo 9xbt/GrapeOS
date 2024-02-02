@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using GrapeOS.Graphics;
 
 namespace GrapeOS.Tasking
 {
@@ -19,6 +18,19 @@ namespace GrapeOS.Tasking
             foreach (Process p in Processes)
             {
                 if (p.PID != PID) continue;
+
+                Processes.Remove(p);
+                return;
+            }
+
+            throw new ArgumentException("Process not found!");
+        }
+
+        internal static void KillProcess(string name)
+        {
+            foreach (Process p in Processes)
+            {
+                if (p.Name != name) continue;
 
                 Processes.Remove(p);
                 return;
