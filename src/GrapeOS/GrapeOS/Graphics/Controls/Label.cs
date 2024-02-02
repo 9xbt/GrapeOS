@@ -17,13 +17,13 @@ namespace GrapeOS.Graphics.Controls
             RenderWithAlpha = true;
 
             Render();
-            Parent.Render();
         }
 
         internal override void Render()
         {
             Contents.Clear(new Color(0));
             Contents.DrawString(0, 0, Text, Font, Color);
+            Parent.Render();
         }
     }
 }

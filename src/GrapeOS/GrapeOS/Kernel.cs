@@ -1,6 +1,4 @@
-﻿#pragma warning disable CA1416
-
-using System;
+﻿using System;
 using Sys = Cosmos.System;
 using GrapeOS.Tasking;
 using GrapeOS.Graphics;
@@ -13,9 +11,9 @@ namespace GrapeOS
     {
         protected override void BeforeRun()
         {
-            Resources.Generate();
+            Resources.Generate(ResourceType.Priority);
             ProcessScheduler.AddProcess(WindowManager.Instance);
-            ProcessScheduler.AddProcess(new HelloWorld());
+            ProcessScheduler.AddProcess(new LoadingDialogue());
         }
 
         protected override void Run()

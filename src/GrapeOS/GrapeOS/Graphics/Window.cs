@@ -215,7 +215,7 @@ namespace GrapeOS.Graphics
             }
 
             // Handle dragging
-            if (!Borderless && IsMouseOverTitlebar && !IsMouseOverCloseButton &&
+            if (/*!Borderless && */IsMouseOverTitlebar && !IsMouseOverCloseButton && // TODO: fix the commented part
                 !IsMouseOverMaximizeButton && !IsMouseOverMinimizeButton &&
                 _lastMouseState == MouseState.None &&
                 MouseManager.MouseState == MouseState.Left)

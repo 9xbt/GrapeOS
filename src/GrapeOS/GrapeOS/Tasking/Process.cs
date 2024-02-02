@@ -6,12 +6,12 @@ namespace GrapeOS.Tasking
     {
         internal string Name;
         internal bool Closing;
-        internal int PID;
+        internal ushort PID;
 
         internal Process(string name)
         {
             Name = name;
-            PID = new Random().Next(0, ushort.MaxValue);
+            PID = (ushort)new Random().Next(ushort.MinValue, ushort.MaxValue);
         }
 
         internal abstract void HandleRun();

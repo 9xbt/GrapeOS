@@ -14,6 +14,7 @@ namespace GrapeOS.Graphics
         private int _framesToHeapCollect = 20;
         private byte _lastSecond = RTC.Second;
 
+        internal Exception _exception = null;
         internal List<Window> Windows = new List<Window>();
         internal Display Screen = Display.GetDisplay(1024, 768);
 
@@ -55,10 +56,15 @@ namespace GrapeOS.Graphics
 
             Screen.DrawString(10, 10, "GrapeOS v0.0.1", Resources.Charcoal, Color.White, Shadow: true);
             Screen.DrawString(10, 36, Screen.GetFPS() + " FPS", Resources.Charcoal, Color.White, Shadow: true);
+            Screen.DrawString(10, 88, "Process list:", Resources.Charcoal, Color.White, Shadow: true);
+
+            for (int i = 0; i < ProcessScheduler.Processes.Count; i++)
+                Screen.DrawString(10, 114 + (i * 16), ProcessScheduler.Processes[i].PID + " (" + ProcessScheduler.Processes[i].Name + ")",
+                    Resources.Charcoal, Color.White, Shadow: true);
 
             foreach (Window w in Windows)
             {
-                if (w == null)
+                if (w == null || !ProcessScheduler.Processes.Contains(w))
                 {
                     RemoveWindow(w);
                     continue;
