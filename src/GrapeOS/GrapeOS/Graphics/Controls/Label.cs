@@ -23,7 +23,8 @@ namespace GrapeOS.Graphics.Controls
         {
             Contents.Clear(new Color(0));
             Contents.DrawString(0, 0, Text, Font, Color);
-            Parent.Render();
+
+            base.Render();
         }
     }
 }

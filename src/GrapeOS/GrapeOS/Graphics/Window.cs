@@ -89,12 +89,9 @@ namespace GrapeOS.Graphics
                 Contents[1, Height - 2] = new Color(0xFFF3F3F3);
 
                 // Render the controls
-                foreach (Control c in Controls)
-                {
-                    if (c == null) Controls.Remove(c);
-                    Contents.DrawImage(c.X + 2, c.Y + 2, c.Contents, c.RenderWithAlpha);
-                }
+                RenderControls();
 
+                // Update the WM
                 WindowManager.Instance.Render();
                 return;
             }
@@ -130,13 +127,19 @@ namespace GrapeOS.Graphics
             Contents.DrawFilledRectangle(6, 22, (ushort)(Width - 12), (ushort)(Height - 29), 0, new Color(0xFFE7E7E7));
 
             // Render the controls
+            RenderControls();
+
+            // Update the WM
+            WindowManager.Instance.Render();
+        }
+
+        internal void RenderControls()
+        {
             foreach (Control c in Controls)
             {
                 if (c == null) Controls.Remove(c);
-                Contents.DrawImage(c.X + 6, c.Y + 22, c.Contents, c.RenderWithAlpha);
+                Contents.DrawImage(c.X + (Borderless ? 2 : 6), c.Y + (Borderless ? 2 : 22), c.Contents, c.RenderWithAlpha);
             }
-
-            WindowManager.Instance.Render();
         }
 
         private void RenderTitlebarButtons()

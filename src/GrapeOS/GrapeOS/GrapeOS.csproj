@@ -25,6 +25,7 @@
 
     <ItemGroup>
       <None Remove="Resources\Fonts\Charcoal.btf" />
+      <None Remove="Resources\Fonts\Chicago.btf" />
       <None Remove="Resources\Fonts\Geneva.btf" />
       <None Remove="Resources\Images\BootLogo.bmp" />
       <None Remove="Resources\Images\Close.bmp" />
@@ -34,6 +35,10 @@
       <None Remove="Resources\Images\Minimize.bmp" />
       <None Remove="Resources\Images\MinimizePressed.bmp" />
       <None Remove="Resources\Images\Mouse.bmp" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Resources\Fonts\Chicago.btf" />
     </ItemGroup>
 
     <ItemGroup>

@@ -32,7 +32,8 @@ namespace GrapeOS.Graphics
             Parent.Controls.Add(this);
         }
 
-        internal abstract void Render();
+        internal virtual void Render()
+            => Parent.RenderControls();
 
         internal virtual void HandleRun()
         {

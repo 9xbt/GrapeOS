@@ -18,14 +18,14 @@ namespace GrapeOS
             Console.WriteLine("!");
 
             Resources.Generate(ResourceType.Priority);
-            ProcessScheduler.AddProcess(WindowManager.Instance);
-            var loadingDialogue = ProcessScheduler.AddProcess(new LoadingDialogue());
 
+            ProcessScheduler.AddProcess(WindowManager.Instance);
+            LoadingDialogue.Instance = (LoadingDialogue)ProcessScheduler.AddProcess(new LoadingDialogue());
             ProcessScheduler.HandleRun();
 
             Resources.Generate(ResourceType.Normal);
 
-            loadingDialogue.Dispose();
+            LoadingDialogue.Instance.Dispose();
 
             ProcessScheduler.AddProcess(new HelloWorld());
         }

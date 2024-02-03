@@ -18,7 +18,8 @@ namespace GrapeOS.Graphics.Controls
         {
             Contents.Clear(new Color(0));
             Contents.DrawImage(2, 2, Image);
-            Parent.Render();
+            
+            base.Render();
         }
     }
 }
