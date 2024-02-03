@@ -1,6 +1,4 @@
-﻿using GrapeOS.Tasking;
-using GrapeOS.Graphics;
-using GrapeOS.Graphics.Controls;
+﻿using GrapeOS.Graphics.Controls;
 using GrapeGL.Graphics;
 
 namespace GrapeOS.Graphics.Apps
@@ -13,12 +11,13 @@ namespace GrapeOS.Graphics.Apps
         {
             Instance.LoadingBar.Value = progress * 100;
             Instance.LoadingBar.Render();
-            WindowManager.Instance.Render();
+            WindowManager.Render();
         }
 
         internal ProgressBar LoadingBar;
 
-        internal LoadingDialogue() : base(301, 223, 422, 323, nameof(LoadingDialogue))
+        internal LoadingDialogue() : base((WindowManager.Screen.Width / 2) - (422 / 2),
+            (WindowManager.Screen.Height / 2) - (323 / 2),422, 323, nameof(LoadingDialogue))
         {
             Borderless = true;
 
@@ -27,7 +26,7 @@ namespace GrapeOS.Graphics.Apps
             _ = new ImageView(this, 33, 24, Resources.BootLogo);
             LoadingBar = new ProgressBar(this, 129, 289, 160, 12);
 
-            Render(); // TODO: remove this
+            Render();
         }
     }
 }

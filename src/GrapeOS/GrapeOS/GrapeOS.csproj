@@ -35,6 +35,7 @@
       <None Remove="Resources\Images\Minimize.bmp" />
       <None Remove="Resources\Images\MinimizePressed.bmp" />
       <None Remove="Resources\Images\Mouse.bmp" />
+      <None Remove="Resources\Images\TalkingMan.bmp" />
     </ItemGroup>
 
     <ItemGroup>
@@ -52,6 +53,7 @@
       <EmbeddedResource Include="Resources\Images\Minimize.bmp" />
       <EmbeddedResource Include="Resources\Images\MinimizePressed.bmp" />
       <EmbeddedResource Include="Resources\Images\Mouse.bmp" />
+      <EmbeddedResource Include="Resources\Images\TalkingMan.bmp" />
     </ItemGroup>
 
     <ItemGroup>

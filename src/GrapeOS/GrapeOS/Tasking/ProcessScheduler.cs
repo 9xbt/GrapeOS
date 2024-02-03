@@ -54,8 +54,8 @@ namespace GrapeOS.Tasking
                     {
                         if (p is Window)
                         {
-                            WindowManager.Instance.RemoveWindow((Window)p);
-                            WindowManager.Instance.Render();
+                            WindowManager.RemoveWindow((Window)p);
+                            WindowManager.Render();
                         }
 
                         KillProcess(p);

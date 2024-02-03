@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Cosmos.System;
 using Cosmos.Core.Memory;
 using Cosmos.HAL;
@@ -11,11 +10,11 @@ namespace GrapeOS.Graphics
 {
     internal sealed class WindowManager : Process
     {
-        private int _framesToHeapCollect = 20;
-        private byte _lastSecond = RTC.Second;
+        private static int _framesToHeapCollect = 20;
+        private static byte _lastSecond = RTC.Second;
 
-        internal List<Window> Windows = new List<Window>();
-        internal Display Screen = Display.GetDisplay(1024, 768);
+        internal static List<Window> Windows = new List<Window>();
+        internal static Display Screen = Display.GetDisplay(800, 600);
 
         internal static WindowManager Instance = new WindowManager();
 
@@ -23,11 +22,13 @@ namespace GrapeOS.Graphics
         {
             MouseManager.ScreenWidth = Screen.Width;
             MouseManager.ScreenHeight = Screen.Height;
+            MouseManager.X = (uint)Screen.Width / 2;
+            MouseManager.Y = (uint)Screen.Height / 2;
 
             Screen.DefineCursor(Resources.Mouse);
         }
 
-        internal Window FocusedWindow
+        internal static Window FocusedWindow
         {
             get
             {
@@ -43,13 +44,13 @@ namespace GrapeOS.Graphics
             }
         }
 
-        internal void AddWindow(Window window)
+        internal static void AddWindow(Window window)
             => Windows.Add(window);
 
-        internal bool RemoveWindow(Window window)
+        internal static bool RemoveWindow(Window window)
             => Windows.Remove(window);
 
-        internal void Render()
+        internal static void Render()
         {
             Screen.Clear(new Color(0xFFB3B3DA));
 

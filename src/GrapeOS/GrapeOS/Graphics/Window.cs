@@ -13,8 +13,6 @@ namespace GrapeOS.Graphics
         private int _dragStartX, _dragStartY, _dragStartMouseX, _dragStartMouseY;
         private bool _dragging = false;
 
-        private MouseState _lastMouseState = MouseState.None;
-
         internal string Title;
         internal int X, Y;
         internal ushort Width, Height;
@@ -27,7 +25,7 @@ namespace GrapeOS.Graphics
 
         internal bool Focused
         {
-            get => WindowManager.Instance.FocusedWindow == this;
+            get => WindowManager.FocusedWindow == this;
         }
 
         internal bool IsMouseOver
@@ -67,7 +65,7 @@ namespace GrapeOS.Graphics
             Controls = new List<Control>();
             Render();
 
-            WindowManager.Instance.AddWindow(this);
+            WindowManager.AddWindow(this);
         }
 
         internal virtual void Render()
@@ -92,7 +90,7 @@ namespace GrapeOS.Graphics
                 RenderControls();
 
                 // Update the WM
-                WindowManager.Instance.Render();
+                WindowManager.Render();
                 return;
             }
 
@@ -114,7 +112,7 @@ namespace GrapeOS.Graphics
 
             if (Minimized)
             {
-                WindowManager.Instance.Render();
+                WindowManager.Render();
                 return;
             }
 
@@ -130,7 +128,7 @@ namespace GrapeOS.Graphics
             RenderControls();
 
             // Update the WM
-            WindowManager.Instance.Render();
+            WindowManager.Render();
         }
 
         internal void RenderControls()
@@ -138,7 +136,7 @@ namespace GrapeOS.Graphics
             foreach (Control c in Controls)
             {
                 if (c == null) Controls.Remove(c);
-                Contents.DrawImage(c.X + (Borderless ? 2 : 6), c.Y + (Borderless ? 2 : 22), c.Contents, c.RenderWithAlpha);
+                else Contents.DrawImage(c.X + (Borderless ? 2 : 6), c.Y + (Borderless ? 2 : 22), c.Contents, c.RenderWithAlpha);
             }
         }
 
@@ -148,23 +146,23 @@ namespace GrapeOS.Graphics
             Contents.DrawImage(Width - 33, 4, IsMouseOverMaximizeButton && MouseManager.MouseState == MouseState.Left ? Resources.MaximizeButtonPressed : Resources.MaximizeButton);
             Contents.DrawImage(Width - 17, 4, IsMouseOverMinimizeButton && MouseManager.MouseState == MouseState.Left ? Resources.MinimizeButtonPressed : Resources.MinimizeButton);
 
-            WindowManager.Instance.Render();
+            WindowManager.Render();
         }
 
         internal override void HandleRun()
         {
             // Handle titlebar buttons
-            if (!Borderless && _lastMouseState != MouseManager.MouseState)
+            if (!Borderless && MouseManager.LastMouseState != MouseManager.MouseState)
                 RenderTitlebarButtons();
 
             if (!Borderless && IsMouseOverCloseButton &&
-                _lastMouseState == MouseState.Left &&
+                MouseManager.LastMouseState == MouseState.Left &&
                 MouseManager.MouseState == MouseState.None)
             {
                 Dispose();
             }
             else if (!Borderless && IsMouseOverMaximizeButton &&
-                _lastMouseState == MouseState.Left &&
+                MouseManager.LastMouseState == MouseState.Left &&
                 MouseManager.MouseState == MouseState.None)
             {
                 if (Minimized)
@@ -183,8 +181,8 @@ namespace GrapeOS.Graphics
 
                     X = 0;
                     Y = 0;
-                    Width = WindowManager.Instance.Screen.Width;
-                    Height = WindowManager.Instance.Screen.Height;
+                    Width = WindowManager.Screen.Width;
+                    Height = WindowManager.Screen.Height;
                 }
                 else
                 {
@@ -199,7 +197,7 @@ namespace GrapeOS.Graphics
                 Render();
             }
             else if (!Borderless && IsMouseOverMinimizeButton &&
-                _lastMouseState == MouseState.Left &&
+                MouseManager.LastMouseState == MouseState.Left &&
                 MouseManager.MouseState == MouseState.None)
             {
                 Minimized = !Minimized;
@@ -218,7 +216,7 @@ namespace GrapeOS.Graphics
             // Handle dragging
             if (!Borderless && IsMouseOverTitlebar && !IsMouseOverCloseButton && // TODO: fix the commented part
                 !IsMouseOverMaximizeButton && !IsMouseOverMinimizeButton &&
-                _lastMouseState == MouseState.None &&
+                MouseManager.LastMouseState == MouseState.None &&
                 MouseManager.MouseState == MouseState.Left)
             {
                 _dragStartX = X;
@@ -236,17 +234,15 @@ namespace GrapeOS.Graphics
                 X = (int)(_dragStartX + (MouseManager.X - _dragStartMouseX));
                 Y = (int)(_dragStartY + (MouseManager.Y - _dragStartMouseY));
 
-                WindowManager.Instance.Render();
+                WindowManager.Render();
             }
 
             // Handle the controls
             foreach (Control c in Controls)
             {
                 if (c == null) Controls.Remove(c);
-                c.HandleRun();
+                else c.HandleRun();
             }
-
-            _lastMouseState = MouseManager.MouseState;
         }
     }
 }
