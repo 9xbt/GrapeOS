@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GrapeOS.Graphics;
 
 namespace GrapeOS.Tasking
 {
@@ -7,8 +8,11 @@ namespace GrapeOS.Tasking
     {
         internal static List<Process> Processes = new List<Process>();
 
-        internal static void AddProcess(Process process)
-            => Processes.Add(process);
+        internal static Process AddProcess(Process process)
+        {
+            Processes.Add(process);
+            return process;
+        }
 
         internal static void KillProcess(Process process)
             => Processes.Remove(process);
@@ -46,7 +50,16 @@ namespace GrapeOS.Tasking
                 try
                 {
                     if (!p.Closing) p.HandleRun();
-                    else KillProcess(p);
+                    else
+                    {
+                        if (p is Window)
+                        {
+                            WindowManager.Instance.RemoveWindow((Window)p);
+                            WindowManager.Instance.Render();
+                        }
+
+                        KillProcess(p);
+                    }
                 }
                 catch (Exception) { KillProcess(p); }
             }

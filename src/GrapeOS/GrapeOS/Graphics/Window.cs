@@ -18,7 +18,7 @@ namespace GrapeOS.Graphics
         internal string Title;
         internal int X, Y;
         internal ushort Width, Height;
-        internal bool Borderless = false;
+        internal bool Borderless;
         internal bool Maximized = false;
         internal bool Minimized = false;
 
@@ -141,8 +141,6 @@ namespace GrapeOS.Graphics
 
         private void RenderTitlebarButtons()
         {
-            if (Borderless) return;
-
             Contents.DrawImage(4, 4, IsMouseOverCloseButton && MouseManager.MouseState == MouseState.Left ? Resources.CloseButtonPressed : Resources.CloseButton);
             Contents.DrawImage(Width - 33, 4, IsMouseOverMaximizeButton && MouseManager.MouseState == MouseState.Left ? Resources.MaximizeButtonPressed : Resources.MaximizeButton);
             Contents.DrawImage(Width - 17, 4, IsMouseOverMinimizeButton && MouseManager.MouseState == MouseState.Left ? Resources.MinimizeButtonPressed : Resources.MinimizeButton);
@@ -153,16 +151,16 @@ namespace GrapeOS.Graphics
         internal override void HandleRun()
         {
             // Handle titlebar buttons
-            if (_lastMouseState != MouseManager.MouseState)
+            if (!Borderless && _lastMouseState != MouseManager.MouseState)
                 RenderTitlebarButtons();
 
-            if (IsMouseOverCloseButton &&
+            if (!Borderless && IsMouseOverCloseButton &&
                 _lastMouseState == MouseState.Left &&
                 MouseManager.MouseState == MouseState.None)
             {
                 Dispose();
             }
-            else if (IsMouseOverMaximizeButton &&
+            else if (!Borderless && IsMouseOverMaximizeButton &&
                 _lastMouseState == MouseState.Left &&
                 MouseManager.MouseState == MouseState.None)
             {
@@ -197,7 +195,7 @@ namespace GrapeOS.Graphics
                 Contents = new Canvas(Width, Height);
                 Render();
             }
-            else if (IsMouseOverMinimizeButton &&
+            else if (!Borderless && IsMouseOverMinimizeButton &&
                 _lastMouseState == MouseState.Left &&
                 MouseManager.MouseState == MouseState.None)
             {
@@ -246,13 +244,6 @@ namespace GrapeOS.Graphics
             }
 
             _lastMouseState = MouseManager.MouseState;
-        }
-
-        internal override void Dispose()
-        {
-            if (WindowManager.Instance.Windows.Contains(this))
-                WindowManager.Instance.RemoveWindow(this);
-            Closing = true;
         }
     }
 }

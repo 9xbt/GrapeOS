@@ -25,7 +25,6 @@
 
     <ItemGroup>
       <None Remove="Resources\Fonts\Charcoal.btf" />
-      <None Remove="Resources\Fonts\Classic.btf" />
       <None Remove="Resources\Fonts\Geneva.btf" />
       <None Remove="Resources\Images\BootLogo.bmp" />
       <None Remove="Resources\Images\Close.bmp" />
@@ -39,7 +38,6 @@
 
     <ItemGroup>
       <EmbeddedResource Include="Resources\Fonts\Charcoal.btf" />
-      <EmbeddedResource Include="Resources\Fonts\Classic.btf" />
       <EmbeddedResource Include="Resources\Fonts\Geneva.btf" />
       <EmbeddedResource Include="Resources\Images\BootLogo.bmp" />
       <EmbeddedResource Include="Resources\Images\Close.bmp" />

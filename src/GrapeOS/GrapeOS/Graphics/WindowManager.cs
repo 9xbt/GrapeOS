@@ -56,15 +56,21 @@ namespace GrapeOS.Graphics
 
             Screen.DrawString(10, 10, "GrapeOS v0.0.1 | Test: " + test, Resources.Charcoal, Color.White, Shadow: true);
             Screen.DrawString(10, 36, Screen.GetFPS() + " FPS", Resources.Charcoal, Color.White, Shadow: true);
-            Screen.DrawString(10, 88, "Process list:", Resources.Charcoal, Color.White, Shadow: true);
 
+            // This generates MASSIVE lag spikes
+            /*Screen.DrawString(10, 88, "Process list:", Resources.Charcoal, Color.White, Shadow: true);
             for (int i = 0; i < ProcessScheduler.Processes.Count; i++)
                 Screen.DrawString(10, 114 + (i * 16), ProcessScheduler.Processes[i].PID + " (" + ProcessScheduler.Processes[i].Name + ")",
                     Resources.Charcoal, Color.White, Shadow: true);
 
+            Screen.DrawString(200, 88, "Window list:", Resources.Charcoal, Color.White, Shadow: true);
+            for (int i = 0; i < Windows.Count; i++)
+                Screen.DrawString(200, 114 + (i * 16), Windows[i].PID + " (" + Windows[i].Name + ")",
+                    Resources.Charcoal, Color.White, Shadow: true);*/
+
             foreach (Window w in Windows)
             {
-                if (w == null || !ProcessScheduler.Processes.Contains(w))
+                if (w == null)
                 {
                     RemoveWindow(w);
                     continue;
