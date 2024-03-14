@@ -65,6 +65,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\GrapeGL\src\GrapeGL\GrapeGL.csproj" />
+      <Reference Include="SVGAIITerminal">
+        <HintPath>SVGAIITerminal.dll</HintPath>
+      </Reference>
     </ItemGroup>
 	
 </Project>

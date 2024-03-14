@@ -2,6 +2,7 @@
 using GrapeOS.Graphics.Apps;
 using GrapeGL.Graphics;
 using GrapeGL.Graphics.Fonts;
+using SVGAIITerminal.TextKit;
 
 namespace GrapeOS
 {
@@ -27,6 +28,7 @@ namespace GrapeOS
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.TalkingMan.bmp")] private static readonly byte[] _talkingManRaw;
 
         public static Font Charcoal, Chicago, Geneva;
+        public static BtfFontFace SVGAIICharcoal, SVGAIIChicago, SVGAIIGeneva;
         public static Canvas BootLogo, CloseButton, MaximizeButton, MinimizeButton, CloseButtonPressed, MaximizeButtonPressed, MinimizeButtonPressed, Mouse, TalkingMan;
 
         public static void Generate(ResourceType type)
@@ -37,6 +39,9 @@ namespace GrapeOS
                     Charcoal = new Font(_charcoalRaw, 16, -1);
                     Chicago = new Font(_chicagoRaw, 16);
                     Geneva = new Font(_genevaRaw, 16);
+                    SVGAIICharcoal = new BtfFontFace(_charcoalRaw, 16);
+                    SVGAIIChicago = new BtfFontFace(_chicagoRaw, 16);
+                    SVGAIIGeneva = new BtfFontFace(_genevaRaw, 16);
                     BootLogo = Image.FromBitmap(_bootLogoRaw);
                     Mouse = Image.FromBitmap(_mouseRaw);
                     return;
