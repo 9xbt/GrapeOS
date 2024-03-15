@@ -7,7 +7,7 @@ namespace GrapeOS.Graphics.Apps
     {
         private ProgressBar _bar;
 
-        internal TestApp() : base(150, 150, 300, 200, "Test Application")
+        internal TestApp() : base(90, 150, 300, 200, "Test Application")
         {
             _ = new Label(this, 10, 10, "Hello, world!", Resources.Geneva, Color.Black);
             _bar = new ProgressBar(this, 10, 36, 160, 12);
