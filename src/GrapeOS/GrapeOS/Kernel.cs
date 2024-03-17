@@ -4,6 +4,7 @@ using Sys = Cosmos.System;
 using GrapeOS.Tasking;
 using GrapeOS.Graphics;
 using GrapeOS.Graphics.Apps;
+using GrapeOS.Graphics.Apps.Terminal;
 using SVGAIITerminal;
 
 namespace GrapeOS

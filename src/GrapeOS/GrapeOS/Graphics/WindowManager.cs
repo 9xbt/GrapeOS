@@ -14,6 +14,7 @@ namespace GrapeOS.Graphics
         private static byte _lastSecond = RTC.Second;
 
         internal static List<Window> Windows = new List<Window>();
+        internal static List<Window> WindowOrder = new List<Window>();
         internal static Display Screen = Display.GetDisplay(800, 600);
 
         internal static WindowManager Instance = new WindowManager();
@@ -44,11 +45,15 @@ namespace GrapeOS.Graphics
             }
         }
 
-        internal static void AddWindow(Window window)
-            => Windows.Add(window);
+        internal static void AddWindow(Window window) {
+            Windows.Add(window);
+            WindowOrder.Add(window);
+        }
 
-        internal static bool RemoveWindow(Window window)
-            => Windows.Remove(window);
+        internal static bool RemoveWindow(Window window) {
+            WindowOrder.Remove(window);
+            return Windows.Remove(window);  
+        } 
 
         internal static void Render()
         {
@@ -76,6 +81,9 @@ namespace GrapeOS.Graphics
                     continue;
                 }
 
+                if (WindowOrder.Contains(w)) WindowOrder.Remove(w);
+                WindowOrder.Add(w);
+
                 Screen.DrawImage(w.X, w.Y, w.Contents, false);
 
                 if (w.Borderless) continue;
@@ -83,6 +91,13 @@ namespace GrapeOS.Graphics
                 Screen.DrawLine(w.X + 2, w.Y + w.Height, w.X + w.Width + 1, w.Y + w.Height, Color.Black);
                 Screen.DrawLine(w.X + w.Width, w.Y + 2, w.X + w.Width, w.Y + w.Height + 1, Color.Black);
             }
+
+            /*WindowOrder.Reverse();
+            Screen.DrawString(400, 88, "WindowOrder list (Count: " + WindowOrder.Count + "):", Resources.Charcoal, Color.White, Shadow: true);
+            for (int i = 0; i < WindowOrder.Count; i++)
+                Screen.DrawString(400, 114 + (i * 16), WindowOrder[i].PID + " (" + WindowOrder[i].Name + ") " + i + " " + WindowOrder[i].IsMouseOver() + " " + WindowOrder[i].isMouseOverArea + " " + WindowOrder[i].Focused,
+                    Resources.Charcoal, Color.White, Shadow: true);
+            WindowOrder.Reverse();*/
 
             Screen.Update(false);
 

@@ -2,6 +2,7 @@
 using Cosmos.System;
 using GrapeOS.Tasking;
 using GrapeGL.Graphics;
+using System.Reflection.Metadata.Ecma335;
 
 namespace GrapeOS.Graphics
 {
@@ -28,29 +29,49 @@ namespace GrapeOS.Graphics
             get => WindowManager.FocusedWindow == this;
         }
 
-        internal bool IsMouseOver
+        internal bool isMouseOverArea {
+           get => MouseManager.X > X && MouseManager.X < X + Width && MouseManager.Y > Y && MouseManager.Y < Y + Height;
+        } 
+
+        internal bool IsMouseOver() // Empty comments!
         {
-            get => MouseManager.X > X && MouseManager.X < X + Width && MouseManager.Y > Y && MouseManager.Y < Y + Height;
+            WindowManager.WindowOrder.Reverse();
+            bool toReturn = true;
+
+            int location = WindowManager.WindowOrder.IndexOf(this);
+
+            if (location + 1 == WindowManager.WindowOrder.Count) {
+                WindowManager.WindowOrder.Reverse();
+                return isMouseOverArea;
+            } 
+
+            // Loop through higher windows and check if mouse is over any of them along with ours
+            for (int i = location + 1; i < WindowManager.WindowOrder.Count; i++) 
+                // If the mouse is not over a higher window, true.
+                toReturn = toReturn && !WindowManager.WindowOrder[i].isMouseOverArea && isMouseOverArea;
+
+            WindowManager.WindowOrder.Reverse();
+            return toReturn;
         }
 
         internal bool IsMouseOverTitlebar
         {
-            get => MouseManager.X > X && MouseManager.X < X + Width && MouseManager.Y > Y && MouseManager.Y < Y + 22;
+            get => MouseManager.X > X && MouseManager.X < X + Width && MouseManager.Y > Y && MouseManager.Y < Y + 22 && IsMouseOver();
         }
 
         internal bool IsMouseOverCloseButton
         {
-            get => MouseManager.X > X + 4 && MouseManager.X < X + 17 && MouseManager.Y > Y + 4 && MouseManager.Y < Y + 17;
+            get => MouseManager.X > X + 4 && MouseManager.X < X + 17 && MouseManager.Y > Y + 4 && MouseManager.Y < Y + 17 && IsMouseOver();
         }
 
         internal bool IsMouseOverMaximizeButton
         {
-            get => MouseManager.X > X + Width - 33 && MouseManager.X < X + Width - 20 && MouseManager.Y > Y + 4 && MouseManager.Y < Y + 17;
+            get => MouseManager.X > X + Width - 33 && MouseManager.X < X + Width - 20 && MouseManager.Y > Y + 4 && MouseManager.Y < Y + 17 && IsMouseOver();
         }
 
         internal bool IsMouseOverMinimizeButton
         {
-            get => MouseManager.X > X + Width - 17 && MouseManager.X < X + Width - 4 && MouseManager.Y > Y + 4 && MouseManager.Y < Y + 17;
+            get => MouseManager.X > X + Width - 17 && MouseManager.X < X + Width - 4 && MouseManager.Y > Y + 4 && MouseManager.Y < Y + 17 && IsMouseOver();
         }
 
         protected Window(int X, int Y, ushort Width, ushort Height, string Title) : base(Title)
@@ -148,7 +169,6 @@ namespace GrapeOS.Graphics
 
             WindowManager.Render();
         }
-
         internal override void HandleRun()
         {
             // Handle titlebar buttons
@@ -213,29 +233,33 @@ namespace GrapeOS.Graphics
                 Render();
             }
 
-            // Handle dragging
-            if (!Borderless && IsMouseOverTitlebar && !IsMouseOverCloseButton && // TODO: fix the commented part
-                !IsMouseOverMaximizeButton && !IsMouseOverMinimizeButton &&
-                MouseManager.LastMouseState == MouseState.None &&
-                MouseManager.MouseState == MouseState.Left)
-            {
-                _dragStartX = X;
-                _dragStartY = Y;
-                _dragStartMouseX = (int)MouseManager.X;
-                _dragStartMouseY = (int)MouseManager.Y;
-                _dragging = true;
+            if (Focused) {
+
+                // Handle dragging
+                if (!Borderless && IsMouseOverTitlebar && !IsMouseOverCloseButton && // TODO: fix the commented part
+                    !IsMouseOverMaximizeButton && !IsMouseOverMinimizeButton &&
+                    MouseManager.LastMouseState == MouseState.None &&
+                    MouseManager.MouseState == MouseState.Left)
+                {
+                    _dragStartX = X;
+                    _dragStartY = Y;
+                    _dragStartMouseX = (int)MouseManager.X;
+                    _dragStartMouseY = (int)MouseManager.Y;
+                    _dragging = true;
+                }
+
+                if (_dragging && MouseManager.MouseState == MouseState.None)
+                    _dragging = false;
+
+                if (_dragging)
+                {
+                    X = (int)(_dragStartX + (MouseManager.X - _dragStartMouseX));
+                    Y = (int)(_dragStartY + (MouseManager.Y - _dragStartMouseY));
+
+                    WindowManager.Render();
+                }
             }
-
-            if (_dragging && MouseManager.MouseState == MouseState.None)
-                _dragging = false;
-
-            if (_dragging)
-            {
-                X = (int)(_dragStartX + (MouseManager.X - _dragStartMouseX));
-                Y = (int)(_dragStartY + (MouseManager.Y - _dragStartMouseY));
-
-                WindowManager.Render();
-            }
+            else if (MouseManager.LastMouseState != MouseManager.MouseState && IsMouseOver()) WindowManager.FocusedWindow = this;
 
             // Handle the controls
             foreach (Control c in Controls)

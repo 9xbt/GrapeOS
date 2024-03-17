@@ -2,7 +2,7 @@
 using GrapeOS.Graphics.Apps;
 using GrapeGL.Graphics;
 using GrapeGL.Graphics.Fonts;
-using SVGAIITerminal.TextKit;
+using System.IO;
 
 namespace GrapeOS
 {
@@ -14,6 +14,7 @@ namespace GrapeOS
 
     internal static class Resources
     {
+        [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Fonts.Fragment.acf")] private static readonly byte[] _fragmentRaw;
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Fonts.Charcoal.btf")] private static readonly byte[] _charcoalRaw;
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Fonts.Chicago.btf")] private static readonly byte[] _chicagoRaw;
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Fonts.Geneva.btf")] private static readonly byte[] _genevaRaw;
@@ -27,8 +28,8 @@ namespace GrapeOS
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.Mouse.bmp")] private static readonly byte[] _mouseRaw;
         [ManifestResourceStream(ResourceName = "GrapeOS.Resources.Images.TalkingMan.bmp")] private static readonly byte[] _talkingManRaw;
 
-        public static Font Charcoal, Chicago, Geneva;
-        public static BtfFontFace SVGAIICharcoal, SVGAIIChicago, SVGAIIGeneva;
+        public static BtfFontFace Charcoal, Chicago, Geneva;
+        public static AcfFontFace Fragment;
         public static Canvas BootLogo, CloseButton, MaximizeButton, MinimizeButton, CloseButtonPressed, MaximizeButtonPressed, MinimizeButtonPressed, Mouse, TalkingMan;
 
         public static void Generate(ResourceType type)
@@ -36,12 +37,10 @@ namespace GrapeOS
             switch (type)
             {
                 case ResourceType.Priority:
-                    Charcoal = new Font(_charcoalRaw, 16, -1);
-                    Chicago = new Font(_chicagoRaw, 16);
-                    Geneva = new Font(_genevaRaw, 16);
-                    SVGAIICharcoal = new BtfFontFace(_charcoalRaw, 16);
-                    SVGAIIChicago = new BtfFontFace(_chicagoRaw, 16);
-                    SVGAIIGeneva = new BtfFontFace(_genevaRaw, 16);
+                    Fragment = new AcfFontFace(new MemoryStream(_fragmentRaw));
+                    Charcoal = new BtfFontFace(_charcoalRaw, 16, -1);
+                    Chicago = new BtfFontFace(_chicagoRaw, 16);
+                    Geneva = new BtfFontFace(_genevaRaw, 16);
                     BootLogo = Image.FromBitmap(_bootLogoRaw);
                     Mouse = Image.FromBitmap(_mouseRaw);
                     return;

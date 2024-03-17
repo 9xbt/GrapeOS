@@ -53,7 +53,7 @@ namespace GrapeOS.Graphics.Controls
             Contents.DrawLine(Width - 3, 3, Width - 3, Height - 3, Pressed ? new Color(0xFF969696) : new Color(0xFFC0C0C0));
             Contents.DrawLine(3, Height - 3, Width - 3, Height - 3, Pressed ? new Color(0xFF969696) : new Color(0xFFC0C0C0));
 
-            Contents.DrawString((Width / 2) - (Resources.Charcoal.MeasureString(Text) / 2) - 1, (Height / 2) - (Resources.Charcoal.Size / 2) - 1,
+            Contents.DrawString((Width / 2) - (Resources.Charcoal.MeasureString(Text) / 2) - 1, (Height / 2) - (Resources.Charcoal.GetHeight() / 2) - 1,
                 Text, Resources.Charcoal, Pressed ? Color.White : Color.Black);
 
             base.Render();

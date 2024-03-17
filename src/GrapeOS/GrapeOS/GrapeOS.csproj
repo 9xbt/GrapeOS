@@ -22,27 +22,10 @@
         <DebugEnabled>False</DebugEnabled>
         <VMWareEdition>Workstation</VMWareEdition>
     </PropertyGroup>
-
+    
     <ItemGroup>
-      <None Remove="Resources\Fonts\Charcoal.btf" />
-      <None Remove="Resources\Fonts\Chicago.btf" />
-      <None Remove="Resources\Fonts\Geneva.btf" />
-      <None Remove="Resources\Images\BootLogo.bmp" />
-      <None Remove="Resources\Images\Close.bmp" />
-      <None Remove="Resources\Images\ClosePressed.bmp" />
-      <None Remove="Resources\Images\Maximize.bmp" />
-      <None Remove="Resources\Images\MaximizePressed.bmp" />
-      <None Remove="Resources\Images\Minimize.bmp" />
-      <None Remove="Resources\Images\MinimizePressed.bmp" />
-      <None Remove="Resources\Images\Mouse.bmp" />
-      <None Remove="Resources\Images\TalkingMan.bmp" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <EmbeddedResource Include="Resources\Fonts\Fragment.acf" />
       <EmbeddedResource Include="Resources\Fonts\Chicago.btf" />
-    </ItemGroup>
-
-    <ItemGroup>
       <EmbeddedResource Include="Resources\Fonts\Charcoal.btf" />
       <EmbeddedResource Include="Resources\Fonts\Geneva.btf" />
       <EmbeddedResource Include="Resources\Images\BootLogo.bmp" />
@@ -65,9 +48,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\GrapeGL\src\GrapeGL\GrapeGL.csproj" />
-      <Reference Include="SVGAIITerminal">
-        <HintPath>SVGAIITerminal.dll</HintPath>
-      </Reference>
+      <ProjectReference Include="..\..\..\..\SVGAIITerminal\src\SVGAIITerminal.csproj" />
     </ItemGroup>
 	
 </Project>
