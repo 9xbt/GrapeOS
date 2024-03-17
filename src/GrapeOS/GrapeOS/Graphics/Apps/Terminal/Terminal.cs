@@ -6,47 +6,43 @@ using Cosmos.System;
 
 namespace GrapeOS.Graphics.Apps.Terminal
 {
+    using System;
     using SVGAIITerminal;
 
     internal sealed class Terminal : Window
     {
         private bool _reading;
 
-        private SVGAIITerminal _terminal;
+        internal SVGAIITerminal terminal;
 
-        internal Terminal() : base(420, 150, 300, 200, "Terminal")
-        {
-            _terminal = new SVGAIITerminal(this.Width - 12, this.Height - 29, Resources.Fragment, UpdateRequest, IdleRequest);
-            _terminal.SetCursorPosition(0, 0);
+        private Shell _shell;
+
+        internal Terminal(Shell shell = null) : base(420, 150, 300, 200, "Terminal")        {
+            terminal = new SVGAIITerminal(this.Width - 12, this.Height - 29, Resources.Fragment, UpdateRequest, IdleRequest);
+            terminal.SetCursorPosition(0, 0);
+
+            if (shell == null) shell = new GShell(terminal);
+            
+            _shell = shell;
         }
 
         private void IdleRequest() {
             ProcessScheduler.HandleRun();
 
-            if (KeyboardManager.TryReadKey(out var key)) _terminal.KeyBuffer.Enqueue(key);
+            if (KeyboardManager.TryReadKey(out var key)) terminal.KeyBuffer.Enqueue(key);
         }
 
         private void UpdateRequest() {
-            Contents.DrawImage(6, 22, _terminal.Contents, false);
+            Contents.DrawImage(6, 22, terminal.Contents, false);
 
             WindowManager.Render();
         }
 
-        internal override void HandleRun()  //abcdefg
+        internal override void HandleRun()
         {
             base.HandleRun();
 
-            if (Focused && !_reading) {
-                _reading = true;
-
-                _terminal.Write("# ");
-
-                var input = _terminal.ReadLine();
-                
-                Shell.Run(input, _terminal);
-
-                _reading = false;
-            }
+            _shell?.Run();
         }
     }
 }
