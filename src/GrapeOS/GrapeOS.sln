@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrapeOS", "GrapeOS\GrapeOS.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrapeGL", "..\..\..\GrapeGL\src\GrapeGL\GrapeGL.csproj", "{5BF26155-F363-4CA1-81A6-42BC7A34E5EF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SVGAIITerminal", "..\..\..\SVGAIITerminal\src\SVGAIITerminal.csproj", "{E3BED96F-3846-430C-8457-542727EE99C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5BF26155-F363-4CA1-81A6-42BC7A34E5EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BF26155-F363-4CA1-81A6-42BC7A34E5EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BF26155-F363-4CA1-81A6-42BC7A34E5EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3BED96F-3846-430C-8457-542727EE99C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3BED96F-3846-430C-8457-542727EE99C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3BED96F-3846-430C-8457-542727EE99C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3BED96F-3846-430C-8457-542727EE99C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

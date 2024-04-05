@@ -52,7 +52,7 @@ namespace GrapeOS.Graphics
 
         internal static bool RemoveWindow(Window window) {
             WindowOrder.Remove(window);
-            return Windows.Remove(window);  
+            return Windows.Remove(window);
         } 
 
         internal static void Render()
