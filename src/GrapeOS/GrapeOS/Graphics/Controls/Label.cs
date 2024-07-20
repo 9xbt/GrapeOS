@@ -21,7 +21,7 @@ namespace GrapeOS.Graphics.Controls
 
         internal override void Render()
         {
-            Contents.Clear(new Color(0));
+            Contents.Clear(Color.Transparent);
             Contents.DrawString(0, 0, Text, Font, Color);
 
             base.Render();
