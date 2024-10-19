@@ -67,7 +67,7 @@ namespace GrapeOS.Graphics.Controls
 
         internal override void HandleUp()
         {
-            base.HandleDown();
+            base.HandleUp();
             Render();
         }
     }
